@@ -39,7 +39,7 @@ namespace TooguzKorgol2._0
         private void onClickKoorgol(object sender, EventArgs e)
         {
             var currentButton = (Button) sender;
-            if (!currentButton.Text.Equals("0"))
+            if (!currentButton.Text.Equals("0") && !currentButton.Text.Equals("ТУЗ"))
             {
                 int num = moving(currentButton);
                 currentButton.Text = "" + num;
@@ -47,7 +47,6 @@ namespace TooguzKorgol2._0
                 switchPlayer();
                 activatePlayer(currentplayer);
             }
-
         }
 
         private void loadKazan()
@@ -66,10 +65,21 @@ namespace TooguzKorgol2._0
         private void resetGame()
         {
             loadKazan();
-            foreach (var button in kazans)
+            /*foreach (var button in kazans)
             {
                 button.Text = "9";
                 button.BackColor = DefaultBackColor;
+            }*/
+            for (int i = 0; i < 9; i++)
+            {
+                kazans[i].Text = "2";
+                kazans[i].BackColor = DefaultBackColor;
+            }
+
+            for (int i = 9; i < 18; i++)
+            {
+                kazans[i].Text = "2";
+                kazans[i].BackColor = DefaultBackColor;
             }
 
             tuzPlayer1 = true;
@@ -128,15 +138,14 @@ namespace TooguzKorgol2._0
             {
                 labelWinner.Text = "Победил нижний игрок";
             }
-
         }
 
-        void CheckTuz(int btn,Button button)
+        void CheckTuz(int btn, Button button)
         {
-            int num = kazans.IndexOf(button);
-            if (btn == 3 && currentplayer == Player.A && !button.Enabled && num!=8)
+            if (currentplayer == Player.A && !button.Enabled && currentIndex != 8)
             {
-                if (tuzPlayer1)
+                int index = (currentIndex + 9) % 18;
+                if (tuzPlayer1 && !kazans[index].Text.Equals("ТУЗ"))
                 {
                     player1Point += btn;
                     score1.Text = "" + player1Point;
@@ -145,9 +154,11 @@ namespace TooguzKorgol2._0
                     tuzPlayer1 = false;
                 }
             }
-            if (btn == 3 && currentplayer == Player.B && !button.Enabled && num!=17)
+
+            if (currentplayer == Player.B && !button.Enabled && currentIndex != 17)
             {
-                if (tuzPlayer2)
+                int index = (currentIndex + 9) % 18;
+                if (tuzPlayer2 && !kazans[index].Text.Equals("ТУЗ"))
                 {
                     player2Point += btn;
                     score2.Text = "" + player2Point;
@@ -160,30 +171,45 @@ namespace TooguzKorgol2._0
 
         private void Check(Button button)
         {
-            int btn = Convert.ToInt32(button.Text);
-
-            CheckWhoWin();
-            CheckTuz(btn,button);
-
-
             if (button.Text.Equals("ТУЗ"))
             {
-                
+                if (currentplayer == Player.A)
+                {
+                    player1Point += 1;
+                    score1.Text = "" + player1Point;
+                }
+                else
+                {
+                    player2Point += 1;
+                    score2.Text = "" + player2Point;
+                }
+            }
+            else
+            {
+                int btn = Convert.ToInt32(button.Text);
+                if (btn == 3)
+                {
+                    CheckTuz(btn, button);
+                }
+
+
+                if (currentplayer == Player.A && btn % 2 == 0 && !button.Enabled)
+                {
+                    player1Point += btn;
+                    score1.Text = "" + player1Point;
+                    button.Text = "0";
+                }
+
+                if (currentplayer == Player.B && btn % 2 == 0 && !button.Enabled)
+                {
+                    player2Point += btn;
+                    score2.Text = "" + player2Point;
+                    button.Text = "0";
+                }
             }
 
-            if (currentplayer == Player.A && btn % 2 == 0 && !button.Enabled)
-            {
-                player1Point += btn;
-                score1.Text = "" + player1Point;
-                button.Text = "0";
-            }
 
-            if (currentplayer == Player.B && btn % 2 == 0 && !button.Enabled)
-            {
-                player2Point += btn;
-                score2.Text = "" + player2Point;
-                button.Text = "0";
-            }
+            CheckWhoWin();
         }
 
         void switchPlayer()
@@ -205,6 +231,12 @@ namespace TooguzKorgol2._0
 
         private int moving(Button btn)
         {
+            foreach (var button in kazans)
+            {
+                if(button.Text.Equals("ТУЗ")) continue;
+                button.BackColor = DefaultBackColor;
+            }
+
             int c = Convert.ToInt32(btn.Text);
 
             currentIndex = kazans.IndexOf(btn);
@@ -214,7 +246,11 @@ namespace TooguzKorgol2._0
             if (c <= 1)
             {
                 currentIndex = (currentIndex + 1) % 18;
-                kazans[currentIndex].Text = Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
+                if (!kazans[currentIndex].Text.Equals("ТУЗ"))
+                {
+                    kazans[currentIndex].Text = Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
+                }
+
                 index = 0;
             }
             else
@@ -222,9 +258,12 @@ namespace TooguzKorgol2._0
                 for (int i = c - 1; i > 0; i--)
                 {
                     currentIndex = (currentIndex + 1) % 18;
-                    kazans[currentIndex].Text = Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
+                    if (!kazans[currentIndex].Text.Equals("ТУЗ"))
+                    {
+                        kazans[currentIndex].Text = Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
+                    }
 
-                    //kazans[currentIndex].BackColor = Color.Red;
+                    kazans[currentIndex].BackColor = Color.Chartreuse;
                     index = i;
                 }
             }
@@ -232,6 +271,5 @@ namespace TooguzKorgol2._0
 
             return index;
         }
-
     }
 }
