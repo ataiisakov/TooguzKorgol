@@ -17,6 +17,11 @@ namespace TooguzKorgol2._0
             A,
             B
         }
+        //array to store min and sec
+        private int[] times; 
+
+        private Timer timer_1;
+        private Timer timer_2;
 
         private bool tuzPlayer1 = true;
         private bool tuzPlayer2 = true;
@@ -27,12 +32,20 @@ namespace TooguzKorgol2._0
 
         List<Button> kazans;
 
+
         int player1Point = 0;
         int player2Point = 0;
 
         public Form1()
         {
             InitializeComponent();
+            times = new int[4];
+            timer1 = new Timer();
+            timer1.Interval = 1000;
+            timer2 = new Timer();
+            timer2.Interval = 1000;
+            timer1.Tick += new EventHandler(timer1_Tick);
+            timer2.Tick += new EventHandler(timer2_Tick);
             resetGame();
         }
 
@@ -64,21 +77,32 @@ namespace TooguzKorgol2._0
 
         private void resetGame()
         {
+            timer1.Stop();
+            timer2.Stop();
             loadKazan();
+            for (var i = 0; i < times.Length; i++)
+            {
+                times[i] = 0;
+            }
+
+            label_timer1.Text = "00:00";
+            label_timer2.Text = "00:00";
             /*foreach (var button in kazans)
             {
                 button.Text = "9";
                 button.BackColor = DefaultBackColor;
             }*/
+
+            //debagging 
             for (int i = 0; i < 9; i++)
             {
-                kazans[i].Text = "2";
+                kazans[i].Text = "9";
                 kazans[i].BackColor = DefaultBackColor;
             }
 
             for (int i = 9; i < 18; i++)
             {
-                kazans[i].Text = "2";
+                kazans[i].Text = "9";
                 kazans[i].BackColor = DefaultBackColor;
             }
 
@@ -231,9 +255,19 @@ namespace TooguzKorgol2._0
 
         private int moving(Button btn)
         {
+            if (currentplayer == Player.A)
+            {
+                timer2.Stop();
+                timer1.Start();
+            }
+            else
+            {
+                timer1.Stop();
+                timer2.Start();
+            }
             foreach (var button in kazans)
             {
-                if(button.Text.Equals("ТУЗ")) continue;
+                if (button.Text.Equals("ТУЗ")) continue;
                 button.BackColor = DefaultBackColor;
             }
 
@@ -263,6 +297,7 @@ namespace TooguzKorgol2._0
                         kazans[currentIndex].Text = Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
                     }
 
+                    if (kazans[currentIndex].Text == "ТУЗ") continue;
                     kazans[currentIndex].BackColor = Color.Chartreuse;
                     index = i;
                 }
@@ -270,6 +305,82 @@ namespace TooguzKorgol2._0
 
 
             return index;
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            
+            times[1] += 1;
+
+            int min = times[0];
+            int sec = times[1];
+
+            string time = "";
+            if (sec >= 60)
+            {
+                times[0] = (times[0] + 1) % 60;
+                times[1] = 0;
+            }
+
+            if (min < 10)
+            {
+                time += "0" + min;
+            }
+            else
+            {
+                time += "" + min;
+            }
+            time += ":";
+            if (sec < 10)
+            {
+                time += "0" + sec;
+            }
+            else
+            {
+                time += "" + sec;
+            }
+
+            //update label
+            label_timer1.Text = time;
+
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+
+            times[3] += 1;
+
+            int min = times[2];
+            int sec = times[3];
+
+            string time = "";
+
+            if (sec >= 60)
+            {
+                times[2] = (times[2] + 1) % 60;
+                times[3] = 0;
+            }
+
+            if (min < 10)
+            {
+                time += "0" + min;
+            }
+            else
+            {
+                time += "" + min;
+            }
+            time += ":";
+            if (sec < 10)
+            {
+                time += "0" + sec;
+            }
+            else
+            {
+                time += "" + sec;
+            }
+
+            //update label
+            label_timer2.Text = time;
         }
     }
 }

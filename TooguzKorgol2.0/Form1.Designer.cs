@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -71,6 +72,10 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.label_timer1 = new System.Windows.Forms.Label();
+            this.label_timer2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -556,6 +561,36 @@
             this.label20.TabIndex = 35;
             this.label20.Text = "1";
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // timer2
+            // 
+            this.timer2.Interval = 1000;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // label_timer1
+            // 
+            this.label_timer1.AutoSize = true;
+            this.label_timer1.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_timer1.Location = new System.Drawing.Point(42, 270);
+            this.label_timer1.Name = "label_timer1";
+            this.label_timer1.Size = new System.Drawing.Size(92, 33);
+            this.label_timer1.TabIndex = 44;
+            this.label_timer1.Text = "00:00";
+            // 
+            // label_timer2
+            // 
+            this.label_timer2.AutoSize = true;
+            this.label_timer2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label_timer2.Location = new System.Drawing.Point(886, 270);
+            this.label_timer2.Name = "label_timer2";
+            this.label_timer2.Size = new System.Drawing.Size(92, 33);
+            this.label_timer2.TabIndex = 45;
+            this.label_timer2.Text = "00:00";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -563,6 +598,8 @@
             this.BackColor = System.Drawing.SystemColors.GrayText;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.label_timer2);
+            this.Controls.Add(this.label_timer1);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label14);
@@ -657,6 +694,10 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.Label label_timer1;
+        private System.Windows.Forms.Label label_timer2;
     }
 }
 
