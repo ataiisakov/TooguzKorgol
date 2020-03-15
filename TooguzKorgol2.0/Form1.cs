@@ -257,13 +257,13 @@ namespace TooguzKorgol2._0
         {
             if (currentplayer == Player.A)
             {
-                timer2.Stop();
-                timer1.Start();
+                timer2.Start();
+                timer1.Stop();
             }
             else
             {
-                timer1.Stop();
-                timer2.Start();
+                timer1.Start();
+                timer2.Stop();
             }
             foreach (var button in kazans)
             {
