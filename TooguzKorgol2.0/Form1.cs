@@ -77,8 +77,7 @@ namespace TooguzKorgol2._0
 
         private void resetGame()
         {
-            timer1.Stop();
-            timer2.Stop();
+            Stop_Timers();
             loadKazan();
             for (var i = 0; i < times.Length; i++)
             {
@@ -87,14 +86,14 @@ namespace TooguzKorgol2._0
 
             label_timer1.Text = "00:00";
             label_timer2.Text = "00:00";
-            /*foreach (var button in kazans)
+            foreach (var button in kazans)
             {
                 button.Text = "9";
                 button.BackColor = DefaultBackColor;
-            }*/
+            }
 
             //debagging 
-            for (int i = 0; i < 9; i++)
+            /*for (int i = 0; i < 9; i++)
             {
                 kazans[i].Text = "9";
                 kazans[i].BackColor = DefaultBackColor;
@@ -104,7 +103,7 @@ namespace TooguzKorgol2._0
             {
                 kazans[i].Text = "9";
                 kazans[i].BackColor = DefaultBackColor;
-            }
+            }*/
 
             tuzPlayer1 = true;
             tuzPlayer2 = true;
@@ -114,8 +113,9 @@ namespace TooguzKorgol2._0
 
             score1.Text = "" + player1Point;
             score2.Text = "" + player2Point;
-            currentplayer = Player.A;
-            activatePlayer(Player.A);
+            CheckWhoWin();
+
+            activatePlayer(currentplayer);
         }
 
         private void activatePlayer(Player x)
@@ -148,20 +148,46 @@ namespace TooguzKorgol2._0
 
         void CheckWhoWin()
         {
-            if (score2.Text.Equals("81") & score1.Equals("81"))
+            if (Convert.ToInt16(score2.Text) == 81 & Convert.ToInt16(score1.Text) == 81)
             {
-                labelWinner.Text = "Ничья";
+                string message = "Ничья";
+                show_message_end(message);
             }
 
             if (Convert.ToInt16(score2.Text) > 81)
             {
-                labelWinner.Text = "Победил верхний игрок";
+                string message = "Победил верхний игрок";
+                show_message_end(message);
             }
 
             if (Convert.ToInt16(score1.Text) > 81)
             {
-                labelWinner.Text = "Победил нижний игрок";
+                string message = "Победил нижний игрок";
+                show_message_end(message);
             }
+            
+        }
+
+        void show_message_end(string message)
+        {
+            Stop_Timers();
+            DialogResult result = MessageBox.Show(message+"! Вы хотите начать новую игру?", "Тогуз коргоол", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            if (result == DialogResult.Yes)
+            {
+                resetGame();
+            }
+
+            if (result == DialogResult.No)
+            {
+                System.Windows.Forms.Application.Exit();
+            }
+        }
+
+        void Stop_Timers()
+        {
+            timer1.Stop();
+            timer2.Stop();
         }
 
         void CheckTuz(int btn, Button button)
