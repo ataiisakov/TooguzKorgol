@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace TooguzKorgol2._0
 {
@@ -17,11 +19,13 @@ namespace TooguzKorgol2._0
             A,
             B
         }
+
         //array to store min and sec
-        private int[] times; 
+        private int[] times;
 
         private Timer timer_1;
         private Timer timer_2;
+
 
         private bool tuzPlayer1 = true;
         private bool tuzPlayer2 = true;
@@ -39,6 +43,7 @@ namespace TooguzKorgol2._0
         public Form1()
         {
             InitializeComponent();
+
             times = new int[4];
             timer1 = new Timer();
             timer1.Interval = 1000;
@@ -165,13 +170,13 @@ namespace TooguzKorgol2._0
                 string message = "Победил нижний игрок";
                 show_message_end(message);
             }
-            
         }
 
         void show_message_end(string message)
         {
             Stop_Timers();
-            DialogResult result = MessageBox.Show(message+"! Вы хотите начать новую игру?", "Тогуз коргоол", MessageBoxButtons.YesNo,
+            DialogResult result = MessageBox.Show(message + "! Вы хотите начать новую игру?", "Тогуз коргоол",
+                MessageBoxButtons.YesNo,
                 MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
             if (result == DialogResult.Yes)
             {
@@ -291,6 +296,7 @@ namespace TooguzKorgol2._0
                 timer1.Start();
                 timer2.Stop();
             }
+
             foreach (var button in kazans)
             {
                 if (button.Text.Equals("ТУЗ")) continue;
@@ -315,27 +321,39 @@ namespace TooguzKorgol2._0
             }
             else
             {
+                kazans[currentIndex].BackColor = Color.Orchid;
                 for (int i = c - 1; i > 0; i--)
                 {
                     currentIndex = (currentIndex + 1) % 18;
                     if (!kazans[currentIndex].Text.Equals("ТУЗ"))
                     {
-                        kazans[currentIndex].Text = Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
+                        kazans[currentIndex].Text =
+                            Convert.ToString(Convert.ToInt32(kazans[currentIndex].Text) + 1);
                     }
 
                     if (kazans[currentIndex].Text == "ТУЗ") continue;
                     kazans[currentIndex].BackColor = Color.Chartreuse;
                     index = i;
+                    Thread.Sleep(500);
+                    Update();
                 }
+                init_Color();
             }
 
 
             return index;
         }
 
+        private void init_Color()
+        {
+            foreach (var button in kazans)
+            {
+                button.BackColor = DefaultBackColor;
+            }
+        }
+
         private void timer1_Tick(object sender, EventArgs e)
         {
-            
             times[1] += 1;
 
             int min = times[0];
@@ -356,6 +374,7 @@ namespace TooguzKorgol2._0
             {
                 time += "" + min;
             }
+
             time += ":";
             if (sec < 10)
             {
@@ -368,12 +387,10 @@ namespace TooguzKorgol2._0
 
             //update label
             label_timer1.Text = time;
-
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-
             times[3] += 1;
 
             int min = times[2];
@@ -395,6 +412,7 @@ namespace TooguzKorgol2._0
             {
                 time += "" + min;
             }
+
             time += ":";
             if (sec < 10)
             {
