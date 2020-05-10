@@ -91,24 +91,24 @@ namespace TooguzKorgol2._0
 
             label_timer1.Text = "00:00";
             label_timer2.Text = "00:00";
-            /*foreach (var button in kazans)
+            foreach (var button in kazans)
             {
                 button.Text = "9";
                 button.BackColor = DefaultBackColor;
-            }*/
+            }
 
             //debagging 
-            for (int i = 0; i < 9; i++)
+            /*for (int i = 0; i < 9; i++)
             {
-                kazans[i].Text = "10";
+                kazans[i].Text = "2";
                 kazans[i].BackColor = DefaultBackColor;
             }
 
             for (int i = 9; i < 18; i++)
             {
-                kazans[i].Text = "2";
+                kazans[i].Text = "10";
                 kazans[i].BackColor = DefaultBackColor;
-            }
+            }*/
 
             tuzPlayer1 = true;
             tuzPlayer2 = true;
@@ -197,7 +197,7 @@ namespace TooguzKorgol2._0
 
         void CheckTuz(int btn, Button button)
         {
-            MessageBox.Show(currentIndex.ToString());
+      
 
             if (currentplayer == Player.A && !button.Enabled && currentIndex!=17)
             {
@@ -337,8 +337,8 @@ namespace TooguzKorgol2._0
                     if (kazans[currentIndex].Text == "ТУЗ") continue;
                     kazans[currentIndex].BackColor = Color.Chartreuse;
                     index = i;
-                    /*Thread.Sleep(500);
-                    Update();*/
+                    Thread.Sleep(500);
+                    Update();
                 }
 
                 init_Color();
